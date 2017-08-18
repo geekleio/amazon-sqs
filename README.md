@@ -1,4 +1,4 @@
-![WBPA.Amazon.SimpleQueueService](https://nblcdn.net/themes/weubphoria.dk/nuget/wbpa-awssdk-sqs.png)
+![WBPA.Amazon.SimpleQueueService](https://nblcdn.net/themes/weubphoria.dk/nuget/wbpa-awssdk-sqs.png?v=1)
 
 WBPA.Amazon.SimpleQueueService
 ----------------
