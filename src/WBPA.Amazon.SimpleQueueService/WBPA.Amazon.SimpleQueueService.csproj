@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0.2270</AssemblyVersion>
-    <FileVersion>1.0.0.2270</FileVersion>
-    <Version>1.0.0.2270</Version>
+    <AssemblyVersion>1.0.2018.840</AssemblyVersion>
+    <FileVersion>1.0.2018.840</FileVersion>
+    <Version>1.0.2018.840</Version>
     <Company>Weubphoria</Company>
     <Authors>Michael Mortensen</Authors>
-    <Copyright>Copyright © Weubphoria 2009-2017. All rights reserved.</Copyright>
+    <Copyright>Copyright © Weubphoria 2009-2018. All rights reserved.</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/wbpa/amazon-sqs</PackageProjectUrl>
     <PackageIconUrl>https://nblcdn.net/themes/weubphoria.dk/nuget/wbpa-awssdk-sqs.png</PackageIconUrl>
@@ -22,8 +22,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SQS" Version="3.3.2.7" />
-    <PackageReference Include="WBPA.Amazon" Version="1.0.0.2270" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.3.3.2" />
+    <PackageReference Include="WBPA.Amazon" Version="1.0.2018.840" />
   </ItemGroup>
 
 </Project>

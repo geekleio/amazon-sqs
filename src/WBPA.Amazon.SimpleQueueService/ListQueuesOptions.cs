@@ -10,7 +10,7 @@
         /// Initializes a new instance of the <see cref="ListQueuesOptions"/> class.
         /// </summary>
         /// <remarks>
-        /// The following table shows the initial property values for an instance of <see cref="FirstInFirstOutQueueSendOptions"/>.
+        /// The following table shows the initial property values for an instance of <see cref="ListQueuesOptions"/>.
         /// <list type="table">
         ///     <listheader>
         ///         <term>Property</term>

@@ -6,14 +6,15 @@ using Amazon.Runtime;
 using Amazon.SQS.Model;
 using Cuemon;
 using Cuemon.Collections.Generic;
+using WBPA.Amazon.Runtime;
 
 namespace WBPA.Amazon.SimpleQueueService
 {
     /// <summary>
     /// Provides ways for managing messages on AWS SQS.
     /// </summary>
-    /// <seealso cref="Manager" />
-    public abstract class MessageQueueManager : Manager
+    /// <seealso cref="AmazonSqsManager" />
+    public abstract class MessageQueueManager : AmazonSqsManager
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageQueueManager"/> class.

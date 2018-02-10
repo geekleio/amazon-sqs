@@ -3,7 +3,7 @@
 namespace WBPA.Amazon.SimpleQueueService
 {
     /// <summary>
-    /// Specifies options that is related to <see cref="Manager"/> operations.
+    /// Specifies options that is related to <see cref="AmazonSqsManager"/> operations.
     /// </summary>
     /// <seealso cref="AsyncOptions" />
     public class QueueAttributeOptions : AsyncOptions

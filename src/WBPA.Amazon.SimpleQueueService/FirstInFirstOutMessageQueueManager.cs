@@ -8,6 +8,7 @@ using Amazon.SQS.Model;
 using Amazon.SQS.Model.Internal.MarshallTransformations;
 using Cuemon;
 using Cuemon.Collections.Generic;
+using WBPA.Amazon.Runtime;
 
 namespace WBPA.Amazon.SimpleQueueService
 {

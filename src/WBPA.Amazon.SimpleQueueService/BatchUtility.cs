@@ -16,7 +16,7 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <typeparam name="TInput">The type of the input items.</typeparam>
         /// <param name="items">The sequence of items that need to be converted.</param>
         /// <param name="converter">The function delegate that converts the specified <paramref name="items"/> to a sequence of entries for a request.</param>
-        /// <param name="counter">The initial value of the by itereation incremented counter.</param>
+        /// <param name="counter">The initial value of the by iteration incremented counter.</param>
         /// <returns>A sequence of entries for a request.</returns>
         public static IEnumerable<TResult> CreateBatchRequestEntries<TResult, TInput>(IEnumerable<TInput> items, Func<TInput, int, TResult> converter, int counter = 0) where TResult : class 
         {

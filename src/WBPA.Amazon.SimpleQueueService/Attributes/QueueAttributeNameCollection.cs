@@ -6,7 +6,7 @@ namespace WBPA.Amazon.SimpleQueueService.Attributes
     /// Represents a collection of <see cref="QueueAttributeName"/>. This class cannot be inherited.
     /// </summary>
     /// <seealso cref="ConstantClassCollection{QueueAttributeName}" />
-    public sealed class QueueAttributeNameCollection : ConstantClassCollection<QueueAttributeName>
+    public class QueueAttributeNameCollection : ConstantClassCollection<QueueAttributeName>
     {
         internal QueueAttributeNameCollection()
         {

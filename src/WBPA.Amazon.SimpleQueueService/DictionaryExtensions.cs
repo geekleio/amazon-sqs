@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Amazon.SQS.Model;
 using Cuemon;
-using WBPA.Amazon.SimpleQueueService.Attributes;
+using WBPA.Amazon.Attributes;
 
 namespace WBPA.Amazon.SimpleQueueService
 {
@@ -20,7 +21,7 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="labelType">The optional type label to create custom data types.</param>
         public static void AddString(this IDictionary<string, MessageAttributeValue> dic, string key, string value, string labelType = null)
         {
-            Add(dic, key, value, labelType, MessageAttributeType.String);
+            Add(dic, key, value, labelType, AttributeType.String);
         }
 
         /// <summary>
@@ -124,6 +125,42 @@ namespace WBPA.Amazon.SimpleQueueService
         /// </summary>
         /// <param name="dic">The dictionary to extend.</param>
         /// <param name="key">The <see cref="string"/> to use as the key of the element to add.</param>
+        /// <param name="value">The <see cref="float"/> to use as the value of the element to add.</param>
+        /// <param name="labelType">The optional type label to create custom data types.</param>
+        public static void AddNumber(this IDictionary<string, MessageAttributeValue> dic, string key, float value, string labelType = null)
+        {
+            Add(dic, key, value.ToString(CultureInfo.InvariantCulture), labelType);
+        }
+
+        /// <summary>
+        /// Adds an element with the provided key, value and optional label type to the dictionary.
+        /// </summary>
+        /// <param name="dic">The dictionary to extend.</param>
+        /// <param name="key">The <see cref="string"/> to use as the key of the element to add.</param>
+        /// <param name="value">The <see cref="decimal"/> to use as the value of the element to add.</param>
+        /// <param name="labelType">The optional type label to create custom data types.</param>
+        public static void AddNumber(this IDictionary<string, MessageAttributeValue> dic, string key, decimal value, string labelType = null)
+        {
+            Add(dic, key, value.ToString(CultureInfo.InvariantCulture), labelType);
+        }
+
+        /// <summary>
+        /// Adds an element with the provided key, value and optional label type to the dictionary.
+        /// </summary>
+        /// <param name="dic">The dictionary to extend.</param>
+        /// <param name="key">The <see cref="string"/> to use as the key of the element to add.</param>
+        /// <param name="value">The <see cref="double"/> to use as the value of the element to add.</param>
+        /// <param name="labelType">The optional type label to create custom data types.</param>
+        public static void AddNumber(this IDictionary<string, MessageAttributeValue> dic, string key, double value, string labelType = null)
+        {
+            Add(dic, key, value.ToString(CultureInfo.InvariantCulture), labelType);
+        }
+
+        /// <summary>
+        /// Adds an element with the provided key, value and optional label type to the dictionary.
+        /// </summary>
+        /// <param name="dic">The dictionary to extend.</param>
+        /// <param name="key">The <see cref="string"/> to use as the key of the element to add.</param>
         /// <param name="value">The <see cref="Stream"/> to use as the value of the element to add.</param>
         /// <param name="labelType">The optional type label to create custom data types.</param>
         public static void AddBinary(this IDictionary<string, MessageAttributeValue> dic, string key, Stream value, string labelType = null)
@@ -133,12 +170,12 @@ namespace WBPA.Amazon.SimpleQueueService
             var attribute = new MessageAttributeValue();
             var ms = new MemoryStream();
             value?.CopyTo(ms);
-            attribute.DataType = labelType == null ? MessageAttributeType.Binary.ToString() : "{0}.{1}".FormatWith(MessageAttributeType.Binary, labelType);
+            attribute.DataType = labelType == null ? AttributeType.Binary.ToString() : "{0}.{1}".FormatWith(AttributeType.Binary, labelType);
             attribute.BinaryValue = ms;
             dic.Add(key, attribute);
         }
 
-        private static void Add(IDictionary<string, MessageAttributeValue> dic, string key, string value, string labelType = null, MessageAttributeType type = MessageAttributeType.Number)
+        private static void Add(IDictionary<string, MessageAttributeValue> dic, string key, string value, string labelType = null, AttributeType type = AttributeType.Number)
         {
             Validator.ThrowIfNull(dic, nameof(dic));
             Validator.ThrowIfNullOrWhitespace(key, nameof(key));

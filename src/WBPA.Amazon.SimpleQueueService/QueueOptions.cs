@@ -13,7 +13,7 @@ namespace WBPA.Amazon.SimpleQueueService
     /// <seealso cref="DelayOptions" />
     public class QueueOptions : DelayOptions
     {
-        protected readonly Dictionary<string, string> Attributes = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _attributes = new Dictionary<string, string>();
 
         /// <summary>
         /// Represents the suffix needed for First-In-First-Out (FIFO) queues.
@@ -30,7 +30,7 @@ namespace WBPA.Amazon.SimpleQueueService
         /// Represents the maximum message size allowed by Amazon SQS.
         /// </summary>
         /// <remarks>The value of this field is equivalent to 256 KB.</remarks>
-        public const int MaximumMessageSize = Manager.MaximumRequestSize;
+        public const int MaximumMessageSize = AmazonSqsManager.MaximumRequestSize;
 
         /// <summary>
         /// Represents the maximum length of time a message is retained by Amazon SQS. This field is read-only.
@@ -94,11 +94,11 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/IAM/latest/UserGuide/PoliciesOverview.html</remarks>
         public string Policy
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.Policy);
+            get => _attributes.GetValueOrDefault(QueueAttributeName.Policy);
             set
             {
                 if (value == null) { return; }
-                Attributes.AddOrUpdate(QueueAttributeName.Policy, value);
+                _attributes.AddOrUpdate(QueueAttributeName.Policy, value);
             }
         }
 
@@ -109,11 +109,11 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html</remarks>
         public string RedrivePolicy
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.RedrivePolicy);
+            get => _attributes.GetValueOrDefault(QueueAttributeName.RedrivePolicy);
             set
             {
                 if (value == null) { return; }
-                Attributes.AddOrUpdate(QueueAttributeName.RedrivePolicy, value);
+                _attributes.AddOrUpdate(QueueAttributeName.RedrivePolicy, value);
             }
         }
 
@@ -123,12 +123,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <value>The amount of time for which to delay a message.</value>
         public override TimeSpan Delay
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.DelaySeconds).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.DelaySeconds).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
             set
             {
                 if (value < TimeSpan.Zero) { value = TimeSpan.Zero; }
                 if (value > MaximumMessageDelay) { value = MaximumMessageDelay; }
-                Attributes.AddOrUpdate(QueueAttributeName.DelaySeconds, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+                _attributes.AddOrUpdate(QueueAttributeName.DelaySeconds, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -139,12 +139,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html</remarks>
         public TimeSpan VisibilityTimeout
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.VisibilityTimeout).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.VisibilityTimeout).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
             set
             {
                 if (value < MinimumVisibilityTimeout) { value = MinimumVisibilityTimeout; }
                 if (value > MaximumVisibilityTimeout) { value = MaximumVisibilityTimeout; }
-                Attributes.AddOrUpdate(QueueAttributeName.VisibilityTimeout, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+                _attributes.AddOrUpdate(QueueAttributeName.VisibilityTimeout, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -154,12 +154,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <value>The length of time for which Amazon SQS retains a message.</value>
         public TimeSpan MessageRetentionPeriod
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.MessageRetentionPeriod).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.MessageRetentionPeriod).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
             set
             {
                 if (value < MinimumMessageRetentionPeriod) { value = MinimumMessageRetentionPeriod; }
                 if (value > MaximumMessageRetentionPeriod) { value = MaximumMessageRetentionPeriod; }
-                Attributes.AddOrUpdate(QueueAttributeName.MessageRetentionPeriod, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+                _attributes.AddOrUpdate(QueueAttributeName.MessageRetentionPeriod, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -169,12 +169,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <value>The limit of how many bytes a message can contain before Amazon SQS rejects it.</value>
         public int MessageSize
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.MaximumMessageSize).ParseWith(Convert.ToInt32);
+            get => _attributes.GetValueOrDefault(QueueAttributeName.MaximumMessageSize).ParseWith(Convert.ToInt32);
             set
             {
                 if (value < MinimumMessageSize) { value = MinimumMessageSize; }
                 if (value > MaximumMessageSize) { value = MaximumMessageSize; }
-                Attributes.AddOrUpdate(QueueAttributeName.MaximumMessageSize, value.ToString());
+                _attributes.AddOrUpdate(QueueAttributeName.MaximumMessageSize, value.ToString());
             }
         }
 
@@ -185,12 +185,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html</remarks>
         public TimeSpan ReceiveMessageWaitTime
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.ReceiveMessageWaitTimeSeconds).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.ReceiveMessageWaitTimeSeconds).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
             set
             {
                 if (value < MinimumReceiveMessageWaitTime) { value = MinimumReceiveMessageWaitTime; }
                 if (value > MaximumReceiveMessageWaitTime) { value = MaximumReceiveMessageWaitTime; }
-                Attributes.AddOrUpdate(QueueAttributeName.ReceiveMessageWaitTimeSeconds, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+                _attributes.AddOrUpdate(QueueAttributeName.ReceiveMessageWaitTimeSeconds, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -201,11 +201,11 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html#sqs-sse-key-terms</remarks>
         public string EncryptionMasterKeyId
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.KmsMasterKeyId);
+            get => _attributes.GetValueOrDefault(QueueAttributeName.KmsMasterKeyId);
             set
             {
                 if (value == null) { return; }
-                Attributes.AddOrUpdate(QueueAttributeName.KmsMasterKeyId, value);
+                _attributes.AddOrUpdate(QueueAttributeName.KmsMasterKeyId, value);
             }
         }
 
@@ -216,12 +216,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html#sqs-how-does-the-data-key-reuse-period-work</remarks>
         public TimeSpan EncryptionDataKeyReusePeriod
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.KmsDataKeyReusePeriodSeconds).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.KmsDataKeyReusePeriodSeconds).ParseWith(s => TimeSpan.FromSeconds(Convert.ToDouble(s)));
             set
             {
                 if (value < MinimumEncryptionDataKeyReusePeriod) { value = MinimumEncryptionDataKeyReusePeriod; }
                 if (value > MaximumEncryptionDataKeyReusePeriod) { value = MaximumEncryptionDataKeyReusePeriod; }
-                Attributes.AddOrUpdate(QueueAttributeName.KmsDataKeyReusePeriodSeconds, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+                _attributes.AddOrUpdate(QueueAttributeName.KmsDataKeyReusePeriodSeconds, value.TotalSeconds.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -232,8 +232,8 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-understanding-logic</remarks>
         public bool FifoQueue
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.FifoQueue).ParseWith(s => bool.Parse(s ?? bool.FalseString));
-            set => Attributes.AddOrUpdate(QueueAttributeName.FifoQueue, Convert.ToString(value));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.FifoQueue).ParseWith(s => bool.Parse(s ?? bool.FalseString));
+            set => _attributes.AddOrUpdate(QueueAttributeName.FifoQueue, Convert.ToString(value));
         }
 
         /// <summary>
@@ -243,13 +243,13 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <remarks>http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-exactly-once-processing</remarks>
         public bool ContentBasedDeduplication
         {
-            get => Attributes.GetValueOrDefault(QueueAttributeName.ContentBasedDeduplication).ParseWith(s => bool.Parse(s ?? bool.FalseString));
-            set => Attributes.AddOrUpdate(QueueAttributeName.ContentBasedDeduplication, Convert.ToString(value));
+            get => _attributes.GetValueOrDefault(QueueAttributeName.ContentBasedDeduplication).ParseWith(s => bool.Parse(s ?? bool.FalseString));
+            set => _attributes.AddOrUpdate(QueueAttributeName.ContentBasedDeduplication, Convert.ToString(value));
         }
 
         internal Dictionary<string, string> GetAttributes()
         {
-            return Attributes;
+            return _attributes;
         }
     }
 }

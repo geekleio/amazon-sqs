@@ -6,7 +6,7 @@ namespace WBPA.Amazon.SimpleQueueService.Attributes
     /// Represents a collection of <see cref="MessageSystemAttributeName"/>. This class cannot be inherited.
     /// </summary>
     /// <seealso cref="ConstantClassCollection{MessageSystemAttributeName}" />
-    public sealed class MessageSystemAttributeNameCollection : ConstantClassCollection<MessageSystemAttributeName>
+    public class MessageSystemAttributeNameCollection : ConstantClassCollection<MessageSystemAttributeName>
     {
         internal MessageSystemAttributeNameCollection()
         {

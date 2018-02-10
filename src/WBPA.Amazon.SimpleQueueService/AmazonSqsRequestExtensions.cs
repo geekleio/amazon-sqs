@@ -27,7 +27,7 @@ namespace WBPA.Amazon.SimpleQueueService
         {
             Validator.ThrowIfNull(request, nameof(request));
             var marshalledSize = request.Marshall<TMarshaller>()?.GetApproximateMessageSize() ?? 0;
-            Validator.ThrowIfGreaterThan(marshalledSize, Manager.MaximumRequestSize, nameof(request), "Request cannot exceed a size of {0} bytes. Actual size was {1}. Try to reduce the message size -or- check the number of attributes specified.".FormatWith(Manager.MaximumRequestSize, marshalledSize));
+            Validator.ThrowIfGreaterThan(marshalledSize, AmazonSqsManager.MaximumRequestSize, nameof(request), "Request cannot exceed a size of {0} bytes. Actual size was {1}. Try to reduce the message size -or- check the number of attributes specified.".FormatWith(AmazonSqsManager.MaximumRequestSize, marshalledSize));
             return request;
         }
     }

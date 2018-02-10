@@ -4,14 +4,15 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.SQS.Model;
 using Cuemon;
+using WBPA.Amazon.Runtime;
 
 namespace WBPA.Amazon.SimpleQueueService
 {
     /// <summary>
     /// Provides ways for managing queues on AWS SQS.
     /// </summary>
-    /// <seealso cref="Manager" />
-    public class QueueManager : Manager
+    /// <seealso cref="AmazonSqsManager" />
+    public class QueueManager : AmazonSqsManager
     {
         private const int MaximumNameLength = 80;
 

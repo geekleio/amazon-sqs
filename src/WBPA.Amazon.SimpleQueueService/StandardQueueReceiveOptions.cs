@@ -12,7 +12,15 @@ namespace WBPA.Amazon.SimpleQueueService
         private int _maxNumberOfMessages;
         private TimeSpan _visibilityTimeout;
         private TimeSpan _waitTime;
+
+        /// <summary>
+        /// The minimum allowed number of messages to return.
+        /// </summary>
         public const int MinimumAllowedNumberOfMessages = 1;
+        
+        /// <summary>
+        /// The maximum allowed number of messages to return.
+        /// </summary>
         public const int MaximumAllowedNumberOfMessages = 10;
 
 
