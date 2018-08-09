@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.2018.840</AssemblyVersion>
-    <FileVersion>1.0.2018.840</FileVersion>
-    <Version>1.0.2018.840</Version>
+    <AssemblyVersion>1.0.2018.2200</AssemblyVersion>
+    <FileVersion>1.0.2018.2200</FileVersion>
+    <Version>1.0.2018.2200</Version>
     <Company>Weubphoria</Company>
     <Authors>Michael Mortensen</Authors>
     <Copyright>Copyright © Weubphoria 2009-2018. All rights reserved.</Copyright>
@@ -22,8 +22,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SQS" Version="3.3.3.2" />
-    <PackageReference Include="WBPA.Amazon" Version="1.0.2018.840" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.3.3.14" />
+    <PackageReference Include="WBPA.Amazon" Version="1.0.2018.2200" />
   </ItemGroup>
 
 </Project>
