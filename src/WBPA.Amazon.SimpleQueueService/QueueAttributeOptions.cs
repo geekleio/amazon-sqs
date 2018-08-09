@@ -1,4 +1,5 @@
-﻿using WBPA.Amazon.SimpleQueueService.Attributes;
+﻿using Cuemon.Threading;
+using WBPA.Amazon.SimpleQueueService.Attributes;
 
 namespace WBPA.Amazon.SimpleQueueService
 {

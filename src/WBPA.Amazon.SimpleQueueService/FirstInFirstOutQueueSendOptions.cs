@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Amazon.SQS.Model;
 using Cuemon;
+using Cuemon.Threading;
 
 namespace WBPA.Amazon.SimpleQueueService
 {

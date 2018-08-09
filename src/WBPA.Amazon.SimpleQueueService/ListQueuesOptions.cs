@@ -1,4 +1,6 @@
-﻿namespace WBPA.Amazon.SimpleQueueService
+﻿using Cuemon.Threading;
+
+namespace WBPA.Amazon.SimpleQueueService
 {
     /// <summary>
     /// Specifies options that is related to list queues operations.

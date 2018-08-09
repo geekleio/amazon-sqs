@@ -4,6 +4,7 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.SQS.Model;
 using Cuemon;
+using Cuemon.Threading;
 using WBPA.Amazon.Runtime;
 
 namespace WBPA.Amazon.SimpleQueueService
