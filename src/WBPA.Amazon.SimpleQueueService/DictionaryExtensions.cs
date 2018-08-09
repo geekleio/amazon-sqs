@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Amazon.SQS.Model;
 using Cuemon;
+using Cuemon.Collections.Generic;
 using WBPA.Amazon.Attributes;
 
 namespace WBPA.Amazon.SimpleQueueService
@@ -12,6 +14,25 @@ namespace WBPA.Amazon.SimpleQueueService
     /// </summary>
     public static class DictionaryExtensions
     {
+        public static string GetString(this IDictionary<string, MessageAttributeValue> dic, string key)
+        {
+            Validator.ThrowIfNull(dic, nameof(dic));
+            return dic.GetValueOrDefault(key)?.StringValue;
+        }
+
+        public static T GetNumber<T>(this IDictionary<string, MessageAttributeValue> dic, string key) where T : IConvertible
+        {
+            Validator.ThrowIfNull(dic, nameof(dic));
+            var valueOrDefault = dic.GetValueOrDefault(key);
+            return valueOrDefault == null ? default(T) : valueOrDefault.StringValue.As<T>();
+        }
+
+        public static Stream GetBinary(this IDictionary<string, MessageAttributeValue> dic, string key)
+        {
+            Validator.ThrowIfNull(dic, nameof(dic));
+            return dic.GetValueOrDefault(key)?.BinaryValue;
+        }
+
         /// <summary>
         /// Adds an element with the provided key, value and optional label type to the dictionary.
         /// </summary>
