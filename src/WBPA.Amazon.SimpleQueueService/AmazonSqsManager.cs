@@ -44,7 +44,7 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="endpoint">The <see cref="Uri"/> of the queue to retrieve attributes.</param>
         /// <param name="setup">The <see cref="QueueAttributeOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<GetQueueAttributesResponse> GetAttributesAsync(Uri endpoint , Action<QueueAttributeOptions> setup = null)
+        public Task<GetQueueAttributesResponse> GetAttributesAsync(Uri endpoint , Action<QueueAttributeOptions> setup = null)
         {
             Validator.ThrowIfNull(endpoint, nameof(endpoint));
             var options = setup.ConfigureOptions();
@@ -53,7 +53,7 @@ namespace WBPA.Amazon.SimpleQueueService
                 QueueUrl = endpoint.OriginalString,
                 AttributeNames = options.AttributeNames.Select(cc => cc.Value).ToList()
             };
-            return await Client.GetQueueAttributesAsync(gqar, options.CancellationToken).ConfigureAwait(false);
+            return Client.GetQueueAttributesAsync(gqar, options.CancellationToken);
         }
     }
 }

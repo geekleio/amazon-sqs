@@ -34,7 +34,7 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="name">The name of the new queue.</param>
         /// <param name="setup">The <see cref="QueueOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<CreateQueueResponse> CreateAsync(string name, Action<QueueOptions> setup = null)
+        public Task<CreateQueueResponse> CreateAsync(string name, Action<QueueOptions> setup = null)
         {
             QueueValidator.ThrowIfNameIsNullOrWhitespace(name);
             QueueValidator.ThrowIfNameLengthIsGreaterThan(name, MaximumNameLength);
@@ -45,7 +45,7 @@ namespace WBPA.Amazon.SimpleQueueService
             {
                 Attributes = options.GetAttributes()
             };
-            return await Client.CreateQueueAsync(cqr, options.CancellationToken).ConfigureAwait(false);
+            return Client.CreateQueueAsync(cqr, options.CancellationToken);
         }
 
         /// <summary>
@@ -69,14 +69,14 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="endpoint">The URI endpoint of the queue to delete.</param>
         /// <param name="setup">The <see cref="AsyncOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<DeleteQueueResponse> DeleteAsync(Uri endpoint, Action<AsyncOptions> setup = null)
+        public Task<DeleteQueueResponse> DeleteAsync(Uri endpoint, Action<AsyncOptions> setup = null)
         {
             Validator.ThrowIfNull(endpoint, nameof(endpoint));
             var options = setup.ConfigureOptions();
             var re = endpoint.ToRegionEndpoint();
             Validator.ThrowIfNotEqual(re.SystemName, Client.Config.RegionEndpoint.SystemName, nameof(endpoint), "The specified {0} resolves to AWS {1} but was expected to be AWS {2}.".FormatWith(nameof(endpoint), re.SystemName, Client.Config.RegionEndpoint.SystemName));
             var dqr = new DeleteQueueRequest(endpoint.OriginalString);
-            return await Client.DeleteQueueAsync(dqr, options.CancellationToken).ConfigureAwait(false);
+            return Client.DeleteQueueAsync(dqr, options.CancellationToken);
         }
 
         /// <summary>
@@ -84,14 +84,14 @@ namespace WBPA.Amazon.SimpleQueueService
         /// </summary>
         /// <param name="setup">The <see cref="ListQueuesOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<ListQueuesResponse> ListAsync(Action<ListQueuesOptions> setup = null)
+        public Task<ListQueuesResponse> ListAsync(Action<ListQueuesOptions> setup = null)
         {
             var options = setup.ConfigureOptions();
             var lqr = new ListQueuesRequest()
             {
                 QueueNamePrefix = options.QueueNamePrefix
             };
-            return await Client.ListQueuesAsync(lqr, options.CancellationToken).ConfigureAwait(false);
+            return Client.ListQueuesAsync(lqr, options.CancellationToken);
         }
 
         /// <summary>
@@ -100,14 +100,14 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="name">The name of the queue to retrieve an URL from.</param>
         /// <param name="setup">The <see cref="AsyncOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<GetQueueUrlResponse> GetUrlAsync(string name, Action<AsyncOptions> setup = null)
+        public Task<GetQueueUrlResponse> GetUrlAsync(string name, Action<AsyncOptions> setup = null)
         {
             QueueValidator.ThrowIfNameIsNullOrWhitespace(name);
             QueueValidator.ThrowIfNameLengthIsGreaterThan(name, MaximumNameLength);
             QueueValidator.ThrowIfQueueNameHasInvalidCharacters(name);
             var options = setup.ConfigureOptions();
             var gqur = new GetQueueUrlRequest(name);
-            return await Client.GetQueueUrlAsync(gqur, options.CancellationToken).ConfigureAwait(false);
+            return Client.GetQueueUrlAsync(gqur, options.CancellationToken);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="endpoint">The <see cref="Uri"/> of the queue to modify attributes.</param>
         /// <param name="setup">The <see cref="QueueOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<SetQueueAttributesResponse> SetAttributesAsync(Uri endpoint, Action<QueueOptions> setup = null)
+        public Task<SetQueueAttributesResponse> SetAttributesAsync(Uri endpoint, Action<QueueOptions> setup = null)
         {
             var options = setup.ConfigureOptions();
             var sqar = new SetQueueAttributesRequest()
@@ -139,7 +139,7 @@ namespace WBPA.Amazon.SimpleQueueService
                 QueueUrl = endpoint.OriginalString,
                 Attributes = options.GetAttributes()
             };
-            return await Client.SetQueueAttributesAsync(sqar, options.CancellationToken).ConfigureAwait(false);
+            return Client.SetQueueAttributesAsync(sqar, options.CancellationToken);
         }
     }
 }

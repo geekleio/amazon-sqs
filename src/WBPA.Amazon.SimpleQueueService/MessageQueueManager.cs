@@ -7,6 +7,7 @@ using Amazon.SQS.Model;
 using Cuemon;
 using Cuemon.Collections.Generic;
 using Cuemon.Threading;
+using Cuemon.Threading.Tasks;
 using WBPA.Amazon.Runtime;
 
 namespace WBPA.Amazon.SimpleQueueService
@@ -62,12 +63,12 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="receiptHandle">The receipt handle associated with the message to delete.</param>
         /// <param name="setup">The <see cref="AsyncOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<DeleteMessageResponse> DeleteAsync(string receiptHandle, Action<AsyncOptions> setup = null)
+        public Task<DeleteMessageResponse> DeleteAsync(string receiptHandle, Action<AsyncOptions> setup = null)
         {
             Validator.ThrowIfNullOrWhitespace(receiptHandle, nameof(receiptHandle));
             var options = setup.ConfigureOptions();
             var dmr = new DeleteMessageRequest(QueueEndpoint.OriginalString, receiptHandle); 
-            return await Client.DeleteMessageAsync(dmr, options.CancellationToken).ConfigureAwait(false);
+            return Client.DeleteMessageAsync(dmr, options.CancellationToken);
         }
 
         /// <summary>
@@ -76,13 +77,13 @@ namespace WBPA.Amazon.SimpleQueueService
         /// <param name="receiptHandles">The receipt handle associated with the message to delete.</param>
         /// <param name="setup">The <see cref="AsyncOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<DeleteMessageBatchResponse> DeleteBatchAsync(IEnumerable<string> receiptHandles, Action<BatchOptions> setup = null)
+        public Task<DeleteMessageBatchResponse> DeleteBatchAsync(IEnumerable<string> receiptHandles, Action<BatchOptions> setup = null)
         {
             Validator.ThrowIfNull(receiptHandles, nameof(receiptHandles));
             var options = setup.ConfigureOptions();
             var entries = BatchUtility.CreateBatchRequestEntries(receiptHandles, (receiptHandle, counter) => new DeleteMessageBatchRequestEntry(options.BatchRequestIdGenerator?.Invoke(counter) ?? "Entry{0}".FormatWith(counter), receiptHandle));
             var batch = new DeleteMessageBatchRequest(QueueEndpoint.OriginalString, entries.ToList());
-            return await Client.DeleteMessageBatchAsync(batch, options.CancellationToken).ConfigureAwait(false);
+            return Client.DeleteMessageBatchAsync(batch, options.CancellationToken);
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace WBPA.Amazon.SimpleQueueService
             while (partitions.HasPartitions)
             {
                 var partition = partitions.ToList();
-                batches.Add(await DeleteBatchAsync(partition, setup).ConfigureAwait(false));
+                batches.Add(await DeleteBatchAsync(partition, setup).ContinueWithSuppressedContext());
             }
             return batches;
         }
@@ -124,14 +125,14 @@ namespace WBPA.Amazon.SimpleQueueService
         /// </summary>
         /// <param name="setup">The <see cref="AsyncOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<PurgeQueueResponse> PurgeAsync(Action<AsyncOptions> setup = null)
+        public Task<PurgeQueueResponse> PurgeAsync(Action<AsyncOptions> setup = null)
         {
             var options = setup.ConfigureOptions();
             var pqr = new PurgeQueueRequest
             {
                 QueueUrl = QueueEndpoint.OriginalString
             };
-            return await Client.PurgeQueueAsync(pqr, options.CancellationToken).ConfigureAwait(false);
+            return Client.PurgeQueueAsync(pqr, options.CancellationToken);
         }
 
         /// <summary>
@@ -139,9 +140,9 @@ namespace WBPA.Amazon.SimpleQueueService
         /// </summary>
         /// <param name="setup">The <see cref="QueueAttributeOptions"/> which need to be configured.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task<GetQueueAttributesResponse> GetAttributesAsync(Action<QueueAttributeOptions> setup = null)
+        public Task<GetQueueAttributesResponse> GetAttributesAsync(Action<QueueAttributeOptions> setup = null)
         {
-            return await GetAttributesAsync(QueueEndpoint, setup).ConfigureAwait(false);
+            return GetAttributesAsync(QueueEndpoint, setup);
         }
     }
 }
